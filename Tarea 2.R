@@ -1,12 +1,17 @@
+library(dplyr)
 log <- read.csv("ds_1_with_fields.csv", header = TRUE)
 log2 <- log
 log2$start_time <- as.POSIXct(log2$start_time, origin = "1970-01-01")
 
 #asn1e2eb <- log2[ log2$asn == "1e2eb", all()]
 #asn1e2eb <- subset(log2,asn=='1e2eb')
-asn1e2eb <- log2[ log2$asn == "1e2eb", ]
+#asn1e2eb <- log2[ log2$asn == "1e2eb", ]
 
-
+#sample_n is in library dplyr
+asn1e2eb <- log2[log2$asn == "1e2eb", ]
+aux <- log2[log2$asn != "1e2eb", ]
+a<- sample_n(aux,size = 120)
+test<- bind_rows(a,asn1e2eb)
 
 #Unskilled = URG
 #Attackers = ACK
