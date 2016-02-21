@@ -1,18 +1,30 @@
-log <- read.csv("data.csv", header = TRUE)
-log2 <- log
-log2$start_time <- as.POSIXct(log2$start_time, origin = "1970-01-01")
-log <- log2[-8]
-
-
 library('dplyr')
-#sample_n is in library dplyr
-p <- log2[1,]
-asn1e2eb <- log2[log2$asn == "1e2eb", ]
+data.log <- read.csv("data.csv", header = TRUE)
 
-b <- sample_n(asn1e2eb,size = (2/3) *nrow(asn1e2eb))
-aux <- log2[log2$asn != "1e2eb", ]
-a<- sample_n(aux,size = (2/3) * nrow(aux))
-training<- bind_rows(a,b)
+#data.log$start_time <- as.POSIXct(data.log$start_time, origin = "1970-01-01")
+
+#2/3 de data random para Training
+aux <- data.log[data.log$asn == "1e2eb", ]
+sample.a <- sample_n(aux,size = (2/3) *nrow(aux))
+aux <- data.log[data.log$asn != "1e2eb", ]
+sample.b<- sample_n(aux,size = (2/3) * nrow(aux))
+log.training<- bind_rows(sample.a,sample.b)
+
+
+#ordenamos por ip fuente y por tiempo 
+
+log.training <- log.training[order(prueba$source_ip, prueba$start_time),]
+
+
+#INTENTO DE CALCULAR LA DIFERENCIA DE TIEMPO ENTRE LAS FILAS
+#reconoce start_time como posixt y al usar la funcion diff
+#no funciona
+
+dts <- as.POSIXct(log.training$start_time, origin = "1970-01-01")
+diff(dts)
+
+
+
 
 
 
