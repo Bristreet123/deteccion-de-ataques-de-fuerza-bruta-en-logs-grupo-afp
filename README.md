@@ -7,6 +7,6 @@
 - El script DetectarAtq.R es una función en R que recibe un set de logs de servidor y devuelve una probabilidad de haber sufrido un ataque
 
 ## Developers
-Luis Aguiar
-Miguel Figueira
-David Padrino
+-Luis Aguiar
+-Miguel Figueira
+-David Padrino
