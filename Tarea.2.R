@@ -1,9 +1,14 @@
 library('dplyr')
 library('arules')
-#setwd("./Asignacion_2")
+#install.packages('dplyr')
+#install.packages('arules')
 data <- read.csv("data.csv", header = TRUE)
 
-data.log <- data
+#data.log <- data
+
+ind <- sample(1:nrow(data),10)
+data.log <- data[ind,]
+
 
 data.log$start_time <- as.POSIXct(data.log$start_time, origin = "1970-01-01")
 
@@ -22,8 +27,8 @@ log.training <- log.training[order(log.training$start_time), ]
 
 
 #calcular columna intertime
-intertime <- diff.POSIXt(log.training$start_time)
-intertime <- c(0,intertime)
+intertime <- diff.POSIXt(log.training$start_time) #diferencia entre tiempos de filas en mins
+intertime <- c(0,intertime) 
 log.training$intertime <- intertime
 
 #Q: con que valores discretizamos los valores hallados de "intertime"
@@ -31,10 +36,10 @@ log.training$intertime <- intertime
 
 
 log.training[["intertime"]] <- ordered(cut(log.training[["intertime"]],
-                                           c(-Inf,0,median(log.training$intertime[log.training$intertime > 0]),Inf),
-                                       labels = c("none","low", "high")))
+                                           c(-Inf,median(log.training$intertime[log.training$intertime > 0]),Inf),
+                                       labels = c("low", "high")))
 log.training[["num_bytes"]] <- ordered(cut(log.training[["num_bytes"]],
-                                           c(-Inf,0,median(log.training$num_bytes[log.training$num_bytes > 0]),Inf),
+                             c(-Inf,0,median(log.training$num_bytes[log.training$num_bytes > 0]),Inf),
                                            labels = c("none","low", "high")))
 
 
@@ -51,31 +56,15 @@ summary(trans)
 
 itemFrequencyPlot(trans, support = 0.1, cex.names=0.8)
 
-rules <- apriori(trans,parameter = list(support = 0.01, confidence = 0.6))
+rules <- apriori(trans,parameter = list(support = 0.05, confidence = 0.6))
 summary(rules)
 
 
-rules.intertimeNone <- subset(rules, subset = rhs %in% "num_bytes=low","intertime=none" & lift > 1.2)
+rules.intertimeNone <- subset(rules, subset = rhs %in% "intertime=low" & lift > 1.2)
 
-rules.intertimeNone <- subset(rules, subset = rhs %in% "intertime=none" & lift > 1.2)
 resultado <- inspect(head(sort(rules.intertimeNone, by = "confidence"), n = 3))
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+max(resultado$confidence)
 
 
 
