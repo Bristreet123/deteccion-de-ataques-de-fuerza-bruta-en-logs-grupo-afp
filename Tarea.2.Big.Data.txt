@@ -1,4 +1,0 @@
-1. Seguir un modelo de "Pregunta -> Validación -> Modelo", es decir, generar un diagrama donde mostremos todas las
-preguntas que nos hicimos hasta que podamos realizar un modelo, posterior a eso es necesario validar dicho modelo.
-De igual manera, las preguntas cuyas respuestas necesiten validación es necesario validarlas.
-2. Usar metodos de validacion cruzada (Puntos extra)
