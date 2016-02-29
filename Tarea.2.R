@@ -72,8 +72,3 @@ if (class(resultado) == "NULL") {
 
 
 #result
-
-
-
-
-
