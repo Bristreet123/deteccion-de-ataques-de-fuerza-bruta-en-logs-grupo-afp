@@ -6,8 +6,9 @@ data <- read.csv("data.csv", header = TRUE)
 
 #data.log <- data
 
-ind <- sample(1:nrow(data),10)
-data.log <- data[ind,]
+#ind <- sample(1:nrow(data),1000)
+#data.log <- data[ind,]
+#DetectarAtq(data.log)
 
 
 data.log$start_time <- as.POSIXct(data.log$start_time, origin = "1970-01-01")
