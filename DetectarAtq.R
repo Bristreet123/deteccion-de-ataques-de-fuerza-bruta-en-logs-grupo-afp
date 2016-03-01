@@ -11,14 +11,29 @@ DetectarAtq <-function(entrada){
   
   
   data.log[["intertime"]] <- ordered(cut(data.log[["intertime"]],
-                                         c(-Inf,0,median(data.log$intertime[data.log$intertime > 0]),Inf),
-                                         labels = c("none","low", "high")))
-  log.t <- data.log[c(1,2,11)]
+                                             c(-Inf,median(data.log$intertime[data.log$intertime > 0]),Inf),
+                                             labels = c("low", "high")))
+  
+  data.log[["num_bytes"]] <- ordered(cut(data.log[["num_bytes"]],
+                                             c(-Inf,0,median(data.log$num_bytes[data.log$num_bytes > 0]),Inf),
+                                             labels = c("none","low", "high")))
+  
+  #log.t <- data.log[c(1,2,11)]
+  log.t <- data.log[c(1,2,10,11)]
   
   trans <- as(log.t, "transactions")
-  rules <- apriori(trans,parameter = list(support = 0.05, confidence = 0.7))
-  rules.intertimeNone <- subset(rules, subset = rhs %in% "intertime=none" & lift > 1)
-  resultado <- inspect(head(sort(rules.intertimeNone, by = "confidence"), n = 3))
-  #result <- max(resultado[5])
+  rules <- apriori(trans,parameter = list(support = 0.01, confidence = 0.6))
+  rules.intertimeLow <- subset(rules, subset = rhs %in% "intertime=low" & lift > 1)
   
+
+  resultado <- inspect(head(sort(rules.intertimeLow, by = "confidence"), n = 3))
+  
+
+
+  if (class(resultado) == "NULL") {
+    result <- 0
+  } else {
+    result <- max(resultado$confidence)
+  }
+  result
 }
