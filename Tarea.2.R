@@ -72,7 +72,15 @@ result
 
 
 
+#data1 <- read.csv("data.csv", header = TRUE)
 
+#nrow(data1)
+#ind <- sample(1:nrow(data1),10)
+#ind <- 1:200
+#data.log <- data1[ind,]
+#data.log <- data1
+#DetectarAtq(data.log)
+#plot(diff(sort(data.log$start_time)))
 
 
 

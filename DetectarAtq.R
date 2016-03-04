@@ -21,8 +21,20 @@ DetectarAtq <-function(entrada){
   #log.t <- data.log[c(1,2,11)]
   log.t <- data.log[c(1,2,10,11)]
   
+  if(nrow(log.t) > 100 ){
+    sup <- 0.01
+  }
+  if(nrow(log.t) <= 100 ){
+    sup <- 0.2
+  }
+  if(nrow(log.t) <= 10 ){
+    sup <- 0.5
+  }
+
+  
+  #(nrow(log.t)/3)
   trans <- as(log.t, "transactions")
-  rules <- apriori(trans,parameter = list(support = 0.01, confidence = 0.6))
+  rules <- apriori(trans,parameter = list(support = sup , confidence = 0.6))
   rules.intertimeLow <- subset(rules, subset = rhs %in% "intertime=low" & lift > 1)
   
 
